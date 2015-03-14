@@ -88,3 +88,5 @@ StatSmoothFunc <- proto(ggplot2:::Stat, {
 
   required_aes <- c("x", "y")
   default_geom <- function(.) GeomSmooth
+})
+  

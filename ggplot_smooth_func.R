@@ -103,8 +103,8 @@ StatSmoothFunc <- ggproto("StatSmooth", Stat,
                                               r2 = format(summary(m)$r.squared, digits = 3)))
                         func_string = as.character(as.expression(eq))
                         
-                        if(is.null(x)) x = min(data$x)*0.9
-                        if(is.null(y)) y=max(data$y)*0.9
+                        x = min(data$x)*0.9
+                        y=max(data$y)*0.9
                         
                         data.frame(x, y, label=func_string)
                         

@@ -62,7 +62,7 @@ StatSmoothFunc <- ggproto("StatSmooth", Stat,
                       compute_group = function(data, scales, method = "auto", formula = y~x,
                                                se = TRUE, n = 80, span = 0.75, fullrange = FALSE,
                                                xseq = NULL, level = 0.95, method.args = list(),
-                                               na.rm = FALSE) {
+                                               na.rm = FALSE, x=NULL, y=NULL) {
                         if (length(unique(data$x)) < 2) {
                           # Not enough data to perform fit
                           return(data.frame())
@@ -103,7 +103,10 @@ StatSmoothFunc <- ggproto("StatSmooth", Stat,
                                               r2 = format(summary(m)$r.squared, digits = 3)))
                         func_string = as.character(as.expression(eq))
                         
-                        data.frame(x=min(data$x)*0.9, y=max(data$y)*0.9, label=func_string)
+                        if(is.null(x)) x = min(data$x)*0.9
+                        if(is.null(y)) y=max(data$y)*0.9
+                        
+                        data.frame(x, y, label=func_string)
                         
                       },
                       

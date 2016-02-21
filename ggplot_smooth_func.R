@@ -11,7 +11,9 @@ stat_smooth_func <- function(mapping = NULL, data = NULL,
                         method.args = list(),
                         na.rm = FALSE,
                         show.legend = NA,
-                        inherit.aes = TRUE) {
+                        inherit.aes = TRUE,
+                        xpos = NULL,
+                        ypos = NULL) {
   layer(
     data = data,
     mapping = mapping,
@@ -30,6 +32,8 @@ stat_smooth_func <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       method.args = method.args,
       span = span,
+      xpos = xpos,
+      ypos = ypos,
       ...
     )
   )
@@ -62,7 +66,7 @@ StatSmoothFunc <- ggproto("StatSmooth", Stat,
                       compute_group = function(data, scales, method = "auto", formula = y~x,
                                                se = TRUE, n = 80, span = 0.75, fullrange = FALSE,
                                                xseq = NULL, level = 0.95, method.args = list(),
-                                               na.rm = FALSE, x=NULL, y=NULL) {
+                                               na.rm = FALSE, xpos=NULL, ypos=NULL) {
                         if (length(unique(data$x)) < 2) {
                           # Not enough data to perform fit
                           return(data.frame())
@@ -103,10 +107,15 @@ StatSmoothFunc <- ggproto("StatSmooth", Stat,
                                               r2 = format(summary(m)$r.squared, digits = 3)))
                         func_string = as.character(as.expression(eq))
                         
-                        data.frame(x=min(data$x)*0.9, y=max(data$y)*0.9, label=func_string)
-
+                        if(is.null(xpos)) xpos = min(data$x)*0.9
+                        if(is.null(ypos)) ypos = max(data$y)*0.9
+                        data.frame(x=xpos, y=ypos, label=func_string)
                         
                       },
                       
                       required_aes = c("x", "y")
 )
+
+
+
+
